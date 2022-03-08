@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#botonload").click(function () {
+                var url = "https://apidoctoresroutes2022igl.azurewebsites.net/api/Doctores";
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        var html = "";
+                        $.each(data, function (index, doctor) {
+                            var idhospital = doctor.idHospital;
+                            var iddoctor = doctor.idDoctor;                           
+                            var apellido = doctor.apellido;
+                            var especialidad = doctor.especialidad;
+                            var salario = doctor.salario;
+                            html += "<tr>";
+                            html += "<td>" + idhospital + "</td>";
+                            html += "<td>" + iddoctor + "</td>";
+                            html += "<td>" + apellido + "</td>";
+                            html += "<td>" + especialidad + "</td>";
+                            html += "<td>" + salario + "</td>";
+                            html += "</tr>";
+                        });
+                        $("#tabladoctores tbody").html(html);
+                    }
+                });
+            });
+        }); //CIERRE DOCUMENT READY
+    </script>
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">API DOCTORES CLIENTE</h1>
+    <br />
+    <button id="botonload" class="btn btn-outline-primary">
+        Cargar doctores
+    </button>
+    <br />
+    <table id="tabladoctores" class="table table-striped table-active">
+        <thead>
+            <tr>
+                <th>ID Hospital</th>
+                <th>ID Doctor</th>
+                <th>Apellido</th>
+                <th>Especialidad</th>
+                <th>Salario</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
