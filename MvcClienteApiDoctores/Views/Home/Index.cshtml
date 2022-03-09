@@ -5,11 +5,17 @@
 @section Scripts{
 
     <script>
+
+        var urlApi = "https://apidoctoresroutes2022igl.azurewebsites.net/";
+
+        //DOCUMENT READY
         $(document).ready(function () {
+            cargarEspecialidades();
             $("#botonload").click(function () {
-                var url = "https://apidoctoresroutes2022igl.azurewebsites.net/api/Doctores";
+                var especialidad = $("#selectespecialidades option:selected").val();
+                var request = "api/Doctores/DoctoresEspecialidad/" + especialidad;
                 $.ajax({
-                    url: url,
+                    url: urlApi + request,
                     method: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -33,6 +39,24 @@
                 });
             });
         }); //CIERRE DOCUMENT READY
+
+
+        //FUNCTION CARGAR ESPECIALIDADES
+        function cargarEspecialidades() {
+            var request = "api/Doctores/Especialidades";
+            $.ajax({
+                url: urlApi + request,
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var html = "";
+                    $.each(data, function (index, especialidad) {
+                        html += "<option value='" + especialidad + "'>" + especialidad + "</option>";
+                    });
+                    $("#selectespecialidades").html(html);
+                }
+            })
+        }
     </script>
 
 }
@@ -40,6 +64,7 @@
 <div class="text-center">
     <h1 class="display-4">API DOCTORES CLIENTE</h1>
     <br />
+    <select id="selectespecialidades" class="form-control"></select>
     <button id="botonload" class="btn btn-outline-primary">
         Cargar doctores
     </button>
